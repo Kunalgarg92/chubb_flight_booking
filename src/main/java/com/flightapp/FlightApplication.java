@@ -1,4 +1,4 @@
-package com.chubb;
+package com.flightapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
