@@ -22,6 +22,37 @@ public class Passenger {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id")
     private BookingTicket booking;
+    
+    private String fareCategory;
+
+    public String getFareCategory() {
+		return fareCategory;
+	}
+
+	public void setFareCategory(String fareCategory) {
+		this.fareCategory = fareCategory;
+	}
+
+	public double getFareApplied() {
+		return fareApplied;
+	}
+
+	public void setFareApplied(double fareApplied) {
+		this.fareApplied = fareApplied;
+	}
+
+	public String getFareMessage() {
+		return fareMessage;
+	}
+
+	public void setFareMessage(String fareMessage) {
+		this.fareMessage = fareMessage;
+	}
+
+	private double fareApplied;
+
+    private String fareMessage;
+
 
 	public Long getId() {
 		return id;

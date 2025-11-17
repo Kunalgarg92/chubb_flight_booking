@@ -73,5 +73,8 @@ public class BookingResponse {
         public String gender;
         public int age;
         public String meal;
+        public String fareCategory;
+        public double fareApplied;
+        public String fareMessage;
     }
 }

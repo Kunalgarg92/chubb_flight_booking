@@ -73,29 +73,45 @@ public class BookingServiceImplementation implements BookingService {
                     .collect(Collectors.joining(","));
             throw new IllegalArgumentException("Seat(s) already booked: " + taken);
         }
-        double totalPrice = 0;
-        for (PassengerRequest pr : request.getPassengers()) {
-            totalPrice += flight.getPrice(); 
-        }
+        
+        double totalPrice = 0.0;
+        
+        String inventoryCat = flight.getFareCategory() == null ? "" : flight.getFareCategory().trim().toUpperCase();
+
         BookingTicket booking = new BookingTicket();
         booking.setPnr(generatePnr());
         booking.setEmail(request.getEmail());
         booking.setFlight(flight);
         booking.setBookingTime(Instant.now());
         booking.setNumberOfSeats(seatsRequested);
-        booking.setTotalPrice(totalPrice);
         booking.setStatus(BookingStatus.BOOKED);
         
         for (PassengerRequest pr : request.getPassengers()) {
+
             Passenger p = new Passenger();
             p.setName(pr.getName());
             p.setAge(pr.getAge());
             p.setGender(pr.getGender());
             p.setMeal(pr.getMeal());
             p.setSeatNumber(pr.getSeatNumber());
+            p.setFareCategory(pr.getFareCategory().toUpperCase());
+            String passengerCat = pr.getFareCategory() == null ? "" : pr.getFareCategory().trim().toUpperCase();
+            p.setFareCategory(passengerCat);
+
+            if (!inventoryCat.isEmpty() && passengerCat.equals(inventoryCat)) {
+                p.setFareApplied(flight.getSpecialFare());
+                p.setFareMessage("Special fare applied for category: " + passengerCat);
+                totalPrice += flight.getSpecialFare();
+            } else {
+                p.setFareApplied(flight.getPrice());
+                p.setFareMessage("No special fare available. Extra benefits applied.");
+                totalPrice += flight.getPrice();
+            }
+
             booking.addPassenger(p);
         }
-        bookingRepo.save(booking);
+        booking.setTotalPrice(totalPrice);
+        bookingRepo.saveAndFlush(booking); 
         flight.setAvailableSeats(flight.getAvailableSeats() - seatsRequested);
         flightRepo.save(flight);
 
@@ -114,6 +130,10 @@ public class BookingServiceImplementation implements BookingService {
             info.gender = px.getGender();
             info.meal = px.getMeal();
             info.seatNumber = px.getSeatNumber();
+            info.fareCategory = px.getFareCategory();
+            info.fareApplied = px.getFareApplied();
+            info.fareMessage = px.getFareMessage();
+
             return info;
         }).collect(Collectors.toList());
 
@@ -157,6 +177,9 @@ public class BookingServiceImplementation implements BookingService {
             info.gender = px.getGender();
             info.meal = px.getMeal();
             info.seatNumber = px.getSeatNumber();
+            info.fareCategory = px.getFareCategory();
+            info.fareApplied = px.getFareApplied();
+            info.fareMessage = px.getFareMessage();
             return info;
         }).collect(Collectors.toList());
 
@@ -189,6 +212,9 @@ public class BookingServiceImplementation implements BookingService {
                 info.gender = px.getGender();
                 info.meal = px.getMeal();
                 info.seatNumber = px.getSeatNumber();
+                info.fareCategory = px.getFareCategory();
+                info.fareApplied = px.getFareApplied();
+                info.fareMessage = px.getFareMessage();
                 return info;
             }).toList();
 

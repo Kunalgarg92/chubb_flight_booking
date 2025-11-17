@@ -17,6 +17,17 @@ public class PassengerRequest {
 	public String getGender() {
 		return gender;
 	}
+	
+	  @NotBlank(message = "Passenger category is required")
+	    private String fareCategory;
+
+	public String getFareCategory() {
+		return fareCategory;
+	}
+
+	  public void setFareCategory(String fareCategory) {
+		  this.fareCategory = fareCategory;
+	  }
 
 	public void setGender(String gender) {
 		this.gender = gender;
