@@ -3,7 +3,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PassengerRequest {
 
     public String getName() {
@@ -20,6 +26,21 @@ public class PassengerRequest {
 	
 	  @NotBlank(message = "Passenger category is required")
 	    private String fareCategory;
+
+//	public PassengerRequest(@NotBlank(message = "Passenger category is required") String fareCategory,
+//			@NotBlank(message = "Passenger name is required") String name,
+//			@NotBlank(message = "Gender is required") @Pattern(regexp = "MALE|FEMALE|OTHER", message = "Gender must be MALE, FEMALE or OTHER") String gender,
+//			@Min(value = 0, message = "Age must be >= 0") int age,
+//			@NotBlank(message = "Meal choice required") @Pattern(regexp = "VEG|NON_VEG", message = "Meal must be VEG or NON_VEG") String meal,
+//			@NotNull(message = "Seat number is required") @Min(value = 1, message = "Seat number must be >= 1") Integer seatNumber) {
+//		super();
+//		this.fareCategory = fareCategory;
+//		this.name = name;
+//		this.gender = gender;
+//		this.age = age;
+//		this.meal = meal;
+//		this.seatNumber = seatNumber;
+//	}
 
 	public String getFareCategory() {
 		return fareCategory;
